@@ -1,39 +1,44 @@
 """
 ملف التنبؤ - سليم صامت
-للتنبؤ بمشاعر نص جديد
+للتنبؤ بمشاعر نص جديد (بدون torch)
 """
+
+import sys
+import os
+
+# إضافة المسار
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from preprocessing import AlgerianTextPreprocessor
 
 class SentimentPredictor:
     def __init__(self):
         self.preprocessor = AlgerianTextPreprocessor()
-        # كلمات مفتاحية للتصنيف السريع
+        # كلمات مفتاحية للتصنيف
         self.positive_words = [
             'بارك', 'فرح', 'حب', 'جيد', 'ممتاز', 'الله', 'نقية',
-            'روعة', 'عجب', 'حفظ', 'نجح', 'توفيق', 'صحة', 'هني'
+            'روعة', 'عجب', 'حفظ', 'نجح', 'توفيق', 'صحة', 'هني',
+            'برافو', 'عظيم', 'ماشاء', 'تبارك', 'يهون', 'سهل'
         ]
         self.negative_words = [
             'ما', 'عجب', 'كره', 'سيء', 'صعب', 'تعب', 'مل', 'زعف',
-            'غضب', 'حزن', 'مشكل', 'صعيب', 'صعب', 'نرفز'
+            'غضب', 'حزن', 'مشكل', 'صعيب', 'نرفز', 'مقلق', 'خايف',
+            'نقص', 'غلط', 'مشي', 'صعبان', 'ندم'
         ]
     
     def predict(self, text):
         """التنبؤ بمشاعر النص"""
-        # معالجة النص
         clean_text = self.preprocessor.process(text)
         
-        # عد الكلمات الإيجابية والسلبية
         pos_count = sum(1 for w in self.positive_words if w in clean_text)
         neg_count = sum(1 for w in self.negative_words if w in clean_text)
         
-        # تحديد النتيجة
         if pos_count > neg_count:
             label = "positive"
-            confidence = min(0.95, 0.7 + (pos_count - neg_count) * 0.1)
+            confidence = min(0.95, 0.6 + (pos_count - neg_count) * 0.15)
         elif neg_count > pos_count:
             label = "negative"
-            confidence = min(0.95, 0.7 + (neg_count - pos_count) * 0.1)
+            confidence = min(0.95, 0.6 + (neg_count - pos_count) * 0.15)
         else:
             label = "neutral"
             confidence = 0.5
@@ -44,17 +49,8 @@ class SentimentPredictor:
             "clean_text": clean_text
         }
 
-# اختبار سريع
+# اختبار
 if __name__ == "__main__":
     predictor = SentimentPredictor()
-    
-    test_texts = [
-        "الله يبارك عليك خويا",
-        "ما عجبنيش الحال",
-        "معلومة عادية",
-    ]
-    
-    for text in test_texts:
-        result = predictor.predict(text)
-        print(f"\nالنص: {text}")
-        print(f"التنبؤ: {result['label']} ({result['confidence']})")
+    test = predictor.predict("الله يبارك عليك")
+    print(f"نتيجة: {test}")
