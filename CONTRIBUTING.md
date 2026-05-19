@@ -1,14 +1,7 @@
-# Contributing to algerian-sentiment
+# Contributing to Algerian Sentiment
 
-Thank you for your interest in contributing! 🎉
+Contributions welcome: dataset improvements, training scripts, and evaluations.
 
-## Development Workflow
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit with conventional commits: `feat:`, `fix:`, `docs:`, `chore:`
-4. Push and open a Pull Request
-
-## Pull Request Checklist
-- [ ] Tests pass
-- [ ] Documentation updated
-- [ ] Changelog entry added
+1. Fork and create a branch `feature/your-feature`.
+2. Follow code style (black / flake8) where applicable.
+3. Open PR with reproducible steps.
